@@ -1,7 +1,8 @@
 # pcr_compare
 Kernel Secure Boot / TPM PCR cross-check
-Concept is reversed from FACEIT and VGK (Vanguard). Same idea as [page_walk](https://github.com/Sage-Mage23/page_walk): don’t trust the OS-visible story, go look at the hardware-backed one. I rewrote it as a standalone compare of “Windows says Secure Boot is on” vs what PCR[7] actually measured. Most of this was written by me; Cursor cleaned up the last build errors and some of the readme.
+Concept is reversed from FACEIT and VGK (Vanguard). Same idea as [page_walk](https://github.com/Sage-Mage23/page_walk): don’t trust the OS-visible story, go look at the hardware-backed one. I rewrote it as a standalone compare of “Windows says Secure Boot is on” vs what PCR[7] actually measured. 
 
+Most of this was written by me; Cursor cleaned up the last build errors and some of the readme.
 Looking for help or just want to chat? Dm me on discord: @deviceregion
 
 pcr_compare is a read-only x64 kernel inspector: it reads the EFI SecureBoot / SetupMode variables, SystemSecureBootInformation, the UEFISecureBootEnabled registry value, and TPM2 PCR[7] SHA-256, then classifies whether those stories agree. In an anti-cheat kernel it answers “was Secure Boot policy actually measured?” rather than “does some firmware variable claim it was?”
