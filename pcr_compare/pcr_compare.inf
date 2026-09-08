@@ -1,0 +1,62 @@
+;
+; pcr_compare.inf
+;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System ; TODO: specify appropriate Class
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318} ; TODO: specify appropriate ClassGuid
+Provider    = %ManufacturerName%
+CatalogFile = pcr_compare.cat
+DriverVer   = ; TODO: set DriverVer in stampinf property pages
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+pcr_compare.sys = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName% = Standard,NT$ARCH$.10.0...16299 ; %13% support introduced in build 16299
+
+[Standard.NT$ARCH$.10.0...16299]
+%pcr_compare.DeviceDesc% = pcr_compare_Device, Root\pcr_compare ; TODO: edit hw-id
+
+[pcr_compare_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+pcr_compare.sys
+
+;-------------- Service installation
+[pcr_compare_Device.NT.Services]
+AddService = pcr_compare,%SPSVCINST_ASSOCSERVICE%, pcr_compare_Service_Inst
+
+; -------------- pcr_compare driver install sections
+[pcr_compare_Service_Inst]
+DisplayName    = %pcr_compare.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %13%\pcr_compare.sys
+
+[pcr_compare_Device.NT.Wdf]
+KmdfService = pcr_compare, pcr_compare_wdfsect
+
+[pcr_compare_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ManufacturerName = "<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+DiskName = "pcr_compare Installation Disk"
+pcr_compare.DeviceDesc = "pcr_compare Device"
+pcr_compare.SVCDESC = "pcr_compare Service"
